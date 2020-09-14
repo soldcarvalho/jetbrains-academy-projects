@@ -1,0 +1,46 @@
+import math
+
+utilizador = (input("Insira o que pretende calcular?\n"
+                     "insira '1' para saber quantos meses são necessários para pagar o empréstimo,\n"
+                     "insira '2' para saber o valor do mensalidade,\n"
+                     "insira '3' para saber o valor total do crédito,\n"
+                     "> "))
+if utilizador == '1':
+    credito = int(input('Insira o crédito: '))
+    mensalidade = int(input('Insira quanto pretende pagar por mês: '))
+    juros = int(input('Insira a percentagem de juros: ')) / (12 * 100) #juros nominal
+
+    total_meses = math.ceil(math.log((mensalidade / (mensalidade - (juros * credito))), (1 + juros)))  # simplificado numa só variavel
+       #numeros_meses = mensalidade / (mensalidade - (juros * credito))
+       #contagem_periodo = math.ceil(math.log(numeros_meses, (1 + juros)))
+    apenas_anos = total_meses // 12
+    apenas_meses = total_meses % 12  # ou total_meses / (12 x apenas_anos)
+    if apenas_anos != 0 and apenas_meses != 0:
+        print(f'Será necessário {apenas_anos} anos e {apenas_meses} meses para pagar o crédito!')
+    if apenas_anos == 0 and apenas_meses != 0:
+        print(f'Será necessário {apenas_meses} meses para pagar este crédito!')
+    if apenas_anos != 0 and apenas_meses == 0:
+        print(f'Será necessário {apenas_anos} anos para pagar este crédito!')
+    if apenas_anos == 0 and apenas_meses == 1:
+        print(f'Será necessário {apenas_meses} mês para pagar este empréstimo!')
+    if apenas_anos == 1 and apenas_meses == 0:
+        print(f'Será necessário {apenas_anos} ano para pagar este empréstimo!')
+elif utilizador == '2':
+    credito = int(input('Insira o crédito: '))
+    apenas_meses = int(input('Insira a quantidade de meses que pretende pagar o empréstimo: '))
+    juros = int(input('Insira a percentagem de juros: ')) / (12 * 100)  # juros nominal
+
+    mensalidade = math.ceil((credito * juros) / (1 - math.pow(1 + juros, - apenas_meses)))
+    print(f'Tem a pagar {mensalidade}€ p/mês. ')
+elif utilizador == '3':
+    mensalidade = int(input('Insira quanto pretende pagar por mês: '))
+    apenas_meses = int(input('Insira a quantidade de meses que pretende pagar o empréstimo: '))
+    juros = int(input('Insira a percentagem de juros: ')) / (12 * 100)  # juros nominal
+
+    # conta separada conforme desenho função
+    primeira_funcao = juros * math.pow((1 + juros), apenas_meses)
+    segunda_funcao = math.pow(1 + juros, apenas_meses) - 1
+    credito = math.ceil(mensalidade / (primeira_funcao / segunda_funcao))
+    print(f'O valor do crédito é de {credito}€.')
+else:
+    print("Por favor selecione as opções '1', '2' ou '3'.")
